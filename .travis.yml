@@ -1,0 +1,13 @@
+os: linux
+language: cpp
+compiler: gcc
+dist: xenial
+
+before_install:
+ - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository -y ppa:beineri/opt-qt-5.12.3-xenial; fi
+ - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
+ - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install qt512-meta-minimal qt512webengine; fi
+
+script:
+    - qmake
+    - make

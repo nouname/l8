@@ -35,6 +35,8 @@ void PostLoader::getPosts(int offset)
     thread->setData(data);
     connect(thread, SIGNAL(endLoad(QString, QString, QString, QList<QVariant>, bool)), this, SLOT(loaded(QString, QString, QString, QList<QVariant>, bool)), Qt::DirectConnection);
     connect(thread, SIGNAL(finished()), this, SLOT(loadMore()));
+    connect(this, SIGNAL(done()), thread, SLOT(stop()));
+    connect(&vk, SIGNAL(done()), thread, SLOT(stop()));
     thread->start();
 }
 
@@ -50,6 +52,7 @@ void PostLoader::timeout(int ms)
 
 void PostLoader::loadMore()
 {
+    emit done();
     offset += 100;
     timeout(3500);
     getPosts(offset);

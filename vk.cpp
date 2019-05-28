@@ -11,11 +11,31 @@
 #include <QNetworkReply>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QStandardPaths>
+#include <QWebEngineCookieStore>
+#include <QWebEngineProfile>
 
 VK::VK(QObject *parent) :
     QObject (parent)
 {
 
+}
+
+void VK::quit() {
+    emit done();
+    QFile file(APP_DIR + ".data");
+    file.remove();
+    file.close();
+}
+
+void VK::logout(QWindow *window) {
+    QStringList paths = QStandardPaths::standardLocations(QStandardPaths::DataLocation);
+    for (int i = 0; i < paths.size(); i++) {
+        QDir dir(paths.at(i) + "/QtWebEngine");
+        if (dir.isReadable())
+            dir.removeRecursively();
+    }
+    window->close();
 }
 
 void VK::setToken(Token* token) {

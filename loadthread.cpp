@@ -92,8 +92,8 @@ void LoadThread::loadImages(QVariant url) {
 
 void LoadThread::stop()
 {
-    if(!wait(5000)) {
-        terminate();
-        wait();
-    }
+    quit();
+    requestInterruption();
+    if (isInterruptionRequested())
+        return;
 }

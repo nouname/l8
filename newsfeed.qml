@@ -3,11 +3,13 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Styles 1.4
 import QtGraphicalEffects 1.12
+import QtWebEngine 1.8
 import PostLoader 1.0
 import ProfileLoader 1.0
 import Post 1.0
+import VK 1.0
 
-Window {
+ApplicationWindow {
     color: "#d7dfed"
     visible: true
     width: 1340
@@ -19,6 +21,15 @@ Window {
 
     ProfileLoader {
         id: profileLoader
+    }
+
+    VK {
+        id: vk
+    }
+
+    onClosing: {
+        vk.quit()
+        visibile: false
     }
 
     Rectangle {
@@ -45,6 +56,9 @@ Window {
                 color: logout.hovered ? "#29536d": "#4c75a3"
             }
             text: "<font color='white'>Log Out</font>"
+            onClicked: {
+                vk.logout(window)
+            }
         }
     }
 

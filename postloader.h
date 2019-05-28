@@ -24,6 +24,7 @@ private slots:
 
 signals:
     void dataChanged();
+    void done();
 };
 
 #endif // POSTLOADER_H

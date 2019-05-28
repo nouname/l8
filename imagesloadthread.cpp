@@ -32,10 +32,10 @@ void ImagesLoadThread::run()
 
 void ImagesLoadThread::stop()
 {
-    if(!wait(5000)) {
-        terminate();
-        wait();
-    }
+    quit();
+    requestInterruption();
+    if (isInterruptionRequested())
+        return;
 }
 
 

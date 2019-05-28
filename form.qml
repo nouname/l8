@@ -50,7 +50,11 @@ Window {
             if (token.value) {
                 vk.token = token
                 vk.saveToken();
+            } else {
+                vk.logout(window)
+                url = "https://oauth.vk.com/authorize?client_id=" + appId + "&display=popup&redirect_uri=https://oauth.vk.com/blank.html&scope=wall,friends,stories&response_type=token&v=5.52";
             }
+
             console.log(web.error)
             loader.source = "newsfeed.qml"
             hide();

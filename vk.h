@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QObject>
+#include <QWindow>
 #include "token.h"
 #include "webviewinterface.h"
 
@@ -14,6 +15,8 @@ public:
     Q_INVOKABLE void saveToken();
     Q_INVOKABLE QString checkAccess(Token *token);
     Q_INVOKABLE Token* getTokenFromFile();
+    Q_INVOKABLE void logout(QWindow *window);
+    Q_INVOKABLE void quit();
 
     VK(QObject* parent = nullptr);
     Token* getToken();
@@ -25,6 +28,7 @@ private:
 
 signals:
     void tokenChanged();
+    void done();
 };
 
 #endif // VK_H
