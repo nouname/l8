@@ -17,10 +17,10 @@ public:
 
 private:
      Post* data;
-     void loadMore();
 
 private slots:
     void loaded(QString title, QString avaUrl, QString text, QList<QVariant> images, bool showThisPost);
+    void loadMore();
 
 signals:
     void dataChanged();

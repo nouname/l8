@@ -33,7 +33,8 @@ void PostLoader::getPosts(int offset)
     QByteArray data = receiver.getData();
     LoadThread *thread = new LoadThread();
     thread->setData(data);
-    connect(thread, SIGNAL(endLoad(QString, QString, QString, QList<QVariant>, bool)), this, SLOT(loaded(QString, QString, QString, QList<QVariant>, bool)), Qt::QueuedConnection);
+    connect(thread, SIGNAL(endLoad(QString, QString, QString, QList<QVariant>, bool)), this, SLOT(loaded(QString, QString, QString, QList<QVariant>, bool)), Qt::DirectConnection);
+    connect(thread, SIGNAL(finished()), this, SLOT(loadMore()));
     thread->start();
 }
 
@@ -64,6 +65,5 @@ void PostLoader::loaded(QString title, QString avaUrl, QString text, QList<QVari
     post->showThisPost = showThisPost;
     setData(post);
     emit dataChanged();
-    loadMore();
 }
 

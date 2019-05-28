@@ -73,7 +73,7 @@ void LoadThread::load(QJsonValue object)
         }
         if (!contents.toObject().value("photo").isUndefined()) {
             thread = new ImagesLoadThread("ImagesLoad", contents);
-            connect(thread, SIGNAL(loaded(QVariant)), this, SLOT(loadImages(QVariant)), Qt::BlockingQueuedConnection);
+            connect(thread, SIGNAL(loaded(QVariant)), this, SLOT(loadImages(QVariant)));
             QEventLoop loop;
             connect(thread, SIGNAL(finished()), &loop, SLOT(quit()));
             thread->start();
