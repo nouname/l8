@@ -1,5 +1,5 @@
 #include "postloader.h"
-#include "consts.h"
+#include "globals.h"
 #include "vk.h"
 #include "datareceiver.h"
 #include <QEventLoop>
@@ -31,9 +31,9 @@ void PostLoader::getPosts(int offset)
     DataReceiver receiver(nullptr);
     receiver.setUrl("https://api.vk.com/method/newsfeed.get?filters=post&count=100&start_from=" + QString::number(offset) + "&access_token=" + vk.getTokenFromFile()->getValue() + "&v=5.52");
     QByteArray data = receiver.getData();
-    LoadThread *thread = new LoadThread();
+    thread = new LoadThread();
     thread->setData(data);
-    connect(thread, SIGNAL(endLoad(QString, QString, QString, QList<QVariant>, bool)), this, SLOT(loaded(QString, QString, QString, QList<QVariant>, bool)), Qt::DirectConnection);
+    connect(thread, SIGNAL(endLoad(QString, QString, QString, QList<QVariant>, bool)), this, SLOT(loaded(QString, QString, QString, QList<QVariant>, bool)));
     connect(thread, SIGNAL(finished()), this, SLOT(loadMore()));
     connect(this, SIGNAL(done()), thread, SLOT(stop()));
     connect(&vk, SIGNAL(done()), thread, SLOT(stop()));
@@ -54,8 +54,8 @@ void PostLoader::loadMore()
 {
     emit done();
     offset += 100;
-    timeout(3500);
     getPosts(offset);
+    timeout(3500);
 }
 
 void PostLoader::loaded(QString title, QString avaUrl, QString text, QList<QVariant> images, bool showThisPost)
@@ -68,5 +68,5 @@ void PostLoader::loaded(QString title, QString avaUrl, QString text, QList<QVari
     post->showThisPost = showThisPost;
     setData(post);
     emit dataChanged();
-}
 
+}

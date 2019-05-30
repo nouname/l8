@@ -62,6 +62,8 @@ ApplicationWindow {
         }
     }
 
+
+
     DropShadow {
         anchors.fill: profile
         horizontalOffset: 0
@@ -95,11 +97,10 @@ ApplicationWindow {
 
     PostLoader {
         id: loader
-        property bool loadMore: false
 
         onDataChanged: {
             if (data.text && data.title && data.avaUrl)
-                listModel.append(element(data.title, data.avaUrl, data.text, data.images))
+                listModel.append((element(data.title, data.avaUrl, data.text, data.images)));
         }
     }
     Rectangle {
@@ -127,10 +128,6 @@ ApplicationWindow {
             MouseArea {
                 anchors.fill: parent
                 acceptedButtons: Qt.NoButton
-            }
-
-            onVerticalVelocityChanged: {
-                loader.loadMore = false
             }
 
             ScrollBar.vertical: ScrollBar {

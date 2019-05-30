@@ -1,5 +1,5 @@
 #include "datareceiver.h"
-#include "imagesloadthread.h"
+#include "dataloadthread.h"
 #include "loadthread.h"
 #include "vk.h"
 #include <QDebug>
@@ -8,13 +8,14 @@
 #include <QJsonArray>
 #include <QVariant>
 #include <QEventLoop>
+#include <QTimer>
 
 static QList<QVariant> images;
 static int i = 0;
 
 LoadThread::LoadThread()
 {
-    connect(this, SIGNAL(startLoad(QJsonValue)), this, SLOT(load(QJsonValue)), Qt::BlockingQueuedConnection);
+    connect(this, SIGNAL(startLoad(QJsonValue)), this, SLOT(load(QJsonValue)), Qt::DirectConnection);
 }
 
 void LoadThread::setData(QByteArray data)
@@ -39,6 +40,7 @@ void LoadThread::run()
         i++;
         qDebug() << i;
         emit startLoad(object);
+        timeout(400);
     }
 }
 
@@ -49,45 +51,13 @@ bool LoadThread::isEndOfFeed()
 
 void LoadThread::load(QJsonValue object)
 {
-    VK vk;
-    int sourceId = object.toObject().value("source_id").toInt();
-    sourceId = -sourceId;
-    bool showThisPost = true;
-
-    DataReceiver receiver(nullptr);
-    receiver.setUrl("https://api.vk.com/method/groups.getById?group_id=" + QVariant(sourceId).toString() + "&access_token=" + vk.getTokenFromFile()->getValue() + "&v=5.92");
-
-    QByteArray groupData = receiver.getData();
-    QJsonObject source = QJsonDocument::fromJson(groupData).object();
-
-    QString title = source.value("response").toArray().at(0).toObject().value("name").toString();
-    QString avaUrl = source.value("response").toArray().at(0).toObject().value("photo_50").toString();
-
-    QString text = object.toObject().value("text").toString();
-    images.clear();
-    for(QJsonValue contents : object.toObject().value("attachments").toArray())
-    {
-        if (contents.toObject().value("type").toString() != "photo") {
-            showThisPost = false;
-            break;
-        }
-        if (!contents.toObject().value("photo").isUndefined()) {
-            thread = new ImagesLoadThread("ImagesLoad", contents);
-            connect(thread, SIGNAL(loaded(QVariant)), this, SLOT(loadImages(QVariant)));
-            QEventLoop loop;
-            connect(thread, SIGNAL(finished()), &loop, SLOT(quit()));
-            thread->start();
-            loop.exec();
-        }
-    }
-    if (text == "" && images.isEmpty())
-        showThisPost = false;
-
-    emit endLoad(title, avaUrl, text, images, showThisPost);
+    thread = new DataLoadThread("LoadData", object);
+    connect(thread, SIGNAL(loaded(QString, QString, QString, QList<QVariant>, bool)), this, SLOT(loadData(QString, QString, QString, QList<QVariant>, bool)), Qt::DirectConnection);
+    thread->start();
 }
 
-void LoadThread::loadImages(QVariant url) {
-    images.append(url);
+void LoadThread::loadData(QString title, QString avaUrl, QString text, QList<QVariant> images, bool showThisPost) {
+    emit endLoad(title, avaUrl, text, images, showThisPost);
 }
 
 void LoadThread::stop()
@@ -96,4 +66,14 @@ void LoadThread::stop()
     requestInterruption();
     if (isInterruptionRequested())
         return;
+}
+
+void LoadThread::timeout(int ms)
+{
+    QTimer *timer = new QTimer();
+    QEventLoop loop;
+    connect(timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    timer->start(ms);
+    loop.exec();
+    loop.deleteLater();
 }

@@ -1,5 +1,5 @@
 #include "datareceiver.h"
-#include "consts.h"
+#include "globals.h"
 #include "webviewinterface.h"
 #include <QApplication>
 #include <QEventLoop>

@@ -17,13 +17,15 @@ public:
 
 private:
      Post* data;
+     LoadThread* thread;
 
 private slots:
-    void loaded(QString title, QString avaUrl, QString text, QList<QVariant> images, bool showThisPost);
+    void loaded(QString title, QString avaUrl, QString text, QList<QVariant>, bool showThisPost);
     void loadMore();
 
 signals:
     void dataChanged();
+    void idChanged();
     void done();
 };
 

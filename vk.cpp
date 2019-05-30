@@ -1,5 +1,5 @@
 #include "vk.h"
-#include "consts.h"
+#include "globals.h"
 #include "datareceiver.h"
 #include <QFile>
 #include <QException>

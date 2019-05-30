@@ -22,10 +22,10 @@ SOURCES += datareceiver.cpp \
     vk.cpp \
     post.cpp \
     webviewinterface.cpp \
-    imagesloadthread.cpp \
     loadthread.cpp \
     postloader.cpp \
-    profileloader.cpp
+    profileloader.cpp \
+    dataloadthread.cpp
 
 RESOURCES += qml.qrc
 
@@ -47,14 +47,14 @@ DISTFILES += \
     l8.pro.user
 
 HEADERS += \
-    consts.h \
     datareceiver.h \
     imageloader.h \
     token.h \
     vk.h \
     post.h \
     webviewinterface.h \
-    imagesloadthread.h \
     loadthread.h \
     postloader.h \
-    profileloader.h
+    profileloader.h \
+    globals.h \
+    dataloadthread.h

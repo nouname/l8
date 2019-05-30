@@ -1,6 +1,6 @@
 #include "webviewinterface.h"
 #include "vk.h"
-#include "consts.h"
+#include "globals.h"
 #include <QEventLoop>
 #include <QJsonDocument>
 #include <QJsonObject>

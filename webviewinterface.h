@@ -2,7 +2,7 @@
 #define WEBVIEWINTERFACE_H
 
 #include <QWebEngineView>
-#include "consts.h"
+#include "globals.h"
 
 class WebViewInterface : public QObject
 {
