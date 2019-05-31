@@ -7,7 +7,6 @@
 #include <QEventLoop>
 #include "datareceiver.h"
 #include "globals.h"
-#include "imageloader.h"
 #include "vk.h"
 
 DataLoadThread::DataLoadThread(QString s, QJsonValue object) : name(s)
@@ -36,6 +35,7 @@ void DataLoadThread::run()
 
     for(QJsonValue contents : object.toObject().value("attachments").toArray())
     {
+        qDebug() << contents;
         if (contents.toObject().value("type").toString() != "photo") {
             showThisPost = false;
             break;
@@ -47,12 +47,9 @@ void DataLoadThread::run()
                 url = value;
 
             result = url.toString();
-            ImageLoader loader(nullptr);
-            loader.setUrl(url.toString());
-            QImage image = loader.getImage();
-
-            const int w = 700;
-            const int h = image.height() * w / image.width();
+            int w = 700;
+            int h = contents.toObject().value("photo").toObject().value("height").toInt() * w /
+                    (double) contents.toObject().value("photo").toObject().value("width").toInt();
 
             result += "*" + QString::number(h);
             images.append(result);
@@ -68,16 +65,5 @@ void DataLoadThread::stop()
     if (isInterruptionRequested())
         return;
 }
-
-void DataLoadThread::timeout(int ms)
-{
-    QTimer *timer = new QTimer();
-    QEventLoop loop;
-    connect(timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-    timer->start(ms);
-    loop.exec();
-    loop.deleteLater();
-}
-
 
 

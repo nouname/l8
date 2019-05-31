@@ -16,7 +16,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += datareceiver.cpp \
-    imageloader.cpp \
     main.cpp \
     token.cpp \
     vk.cpp \
@@ -48,7 +47,6 @@ DISTFILES += \
 
 HEADERS += \
     datareceiver.h \
-    imageloader.h \
     token.h \
     vk.h \
     post.h \

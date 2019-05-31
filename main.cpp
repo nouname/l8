@@ -1,4 +1,3 @@
-#include "imageloader.h"
 #include "loadthread.h"
 #include "postloader.h"
 #include "profileloader.h"
@@ -14,7 +13,6 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QtWebEngine::initialize();
 
-    qmlRegisterType<ImageLoader>("ImageLoader", 1, 0, "ImageLoader");
     qmlRegisterType<WebViewInterface>("WebViewInterface", 1, 0, "WebViewInterface");
     qmlRegisterType<VK>("VK", 1, 0, "VK");
     qmlRegisterType<Token>("Token", 1, 0, "Token");
