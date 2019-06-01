@@ -40,7 +40,7 @@ void LoadThread::run()
         i++;
         qDebug() << i;
         emit startLoad(object);
-        timeout(1000);
+        timeout(300);
     }
 }
 

@@ -55,7 +55,7 @@ void PostLoader::loadMore()
     emit done();
     offset += 100;
     getPosts(offset);
-    timeout(3500);
+    timeout(3000);
 }
 
 void PostLoader::loaded(QString title, QString avaUrl, QString text, QList<QVariant> images, bool showThisPost)

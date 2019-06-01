@@ -35,7 +35,6 @@ void DataLoadThread::run()
 
     for(QJsonValue contents : object.toObject().value("attachments").toArray())
     {
-        qDebug() << contents;
         if (contents.toObject().value("type").toString() != "photo") {
             showThisPost = false;
             break;
